@@ -1,0 +1,3 @@
+{"question": "进入 WAF 拦截规则配置", "type": "navigation", "is_fast": true, "console_path": "/dashboard/security/waf/custom-rules", "role": "Security:Admin"}
+{"question": "线上 502 错误怎么排查？有什么可能的原因？", "type": "qa", "keywords": ["502", "ERR_GATEWAY_502", "源站"]}
+{"question": "请推荐一部好莱坞经典的科幻电影", "type": "out_of_domain", "refuse": true}

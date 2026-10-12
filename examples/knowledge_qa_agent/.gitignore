@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment & Credentials
+.env
+.env.local
+
+# SQLite temporary runtime files
+*.db-shm
+*.db-wal
+
+# Test & coverage artifacts
+.coverage
+htmlcov/
+.pytest_cache/

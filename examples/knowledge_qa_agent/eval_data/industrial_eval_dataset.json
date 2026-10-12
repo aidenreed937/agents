@@ -1,0 +1,139 @@
+[
+  {
+    "item_id": "ind_fast_01",
+    "query": "打开 PMS 变压器设备缺陷填报页面",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/pms/equipment/defect-report",
+    "expected_permission": "Equipment:Operator"
+  },
+  {
+    "item_id": "ind_fast_02",
+    "query": "查看主变在线色谱监测实时大盘",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/scada/monitoring/dga-realtime",
+    "expected_permission": "Dispatcher:Viewer"
+  },
+  {
+    "item_id": "ind_fast_03",
+    "query": "跳转变压器多测点绕组温升大盘",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/scada/monitoring/temperature-metrics",
+    "expected_permission": "Maintenance:Viewer"
+  },
+  {
+    "item_id": "ind_fast_04",
+    "query": "查看充油电气设备规程注意值限值台账",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/pms/standard/attention-limits",
+    "expected_permission": "Equipment:Admin"
+  },
+  {
+    "item_id": "ind_rag_01",
+    "query": "根据 DL/T 722 规程，330kV 及以上变压器总烃和乙炔的注意值标准是多少？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "150",
+      "注意值",
+      "330kV",
+      "总烃"
+    ]
+  },
+  {
+    "item_id": "ind_rag_02",
+    "query": "变压器油中产生大量乙炔（C2H2）通常对应什么性质的设备内部故障？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "电弧",
+      "放电",
+      "800℃",
+      "乙炔"
+    ]
+  },
+  {
+    "item_id": "ind_rag_03",
+    "query": "利用 IEC 改良三比值法判断故障类型时，使用的是哪三种特征气体比值？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "C2H2 / C2H4",
+      "CH4 / H2",
+      "C2H4 / C2H6",
+      "三比值"
+    ]
+  },
+  {
+    "item_id": "ind_rag_04",
+    "query": "当变压器轻瓦斯继电器动作报警时，现场规程要求的处置步骤是什么？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "轻瓦斯",
+      "放气嘴",
+      "色谱分析",
+      "停电"
+    ]
+  },
+  {
+    "item_id": "ind_rag_05",
+    "query": "规程中定义的变压器油中特征气体主要包括哪七种？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "特征气体",
+      "总烃",
+      "代数和",
+      "四种"
+    ]
+  },
+  {
+    "item_id": "ind_rag_06",
+    "query": "低温过热（低于150℃）与高温过热在改良三比值法中的编码组合分别是什么？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "0, 0, 1",
+      "0, 2, 2",
+      "低温过热",
+      "高温过热"
+    ]
+  },
+  {
+    "item_id": "ind_diag_01",
+    "query": "变压器瓦斯继电器报警且油色谱乙炔超标，请结合在线监测指标排查故障原因并指导处置",
+    "category": "rbac_action",
+    "expected_fast_path": false,
+    "target_keywords": [
+      "轻瓦斯",
+      "油色谱",
+      "电弧放电",
+      "停电"
+    ]
+  },
+  {
+    "item_id": "ind_ood_01",
+    "query": "如何申请退还企业微信支付商户手续费？",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "ind_ood_02",
+    "query": "附近有哪些地道正宗的四川火锅店推荐？",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "ind_ood_03",
+    "query": "生产库 MySQL 数据库主从复制延迟超过 60 秒应如何调整 binlog 参数？",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  }
+]

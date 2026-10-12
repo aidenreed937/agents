@@ -1,0 +1,281 @@
+[
+  {
+    "item_id": "fast_01",
+    "query": "打开 WAF 规则",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/security/waf/custom-rules",
+    "expected_permission": "Security:Admin"
+  },
+  {
+    "item_id": "fast_02",
+    "query": "查看 502 错误日志",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/analytics/traffic-errors",
+    "expected_permission": "Viewer"
+  },
+  {
+    "item_id": "fast_03",
+    "query": "跳转跨域响应头设置",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/rules/response-headers",
+    "expected_permission": "Zone:Edit"
+  },
+  {
+    "item_id": "fast_04",
+    "query": "进入限流控制台",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/security/rate-limiting",
+    "expected_permission": "Security:Edit"
+  },
+  {
+    "item_id": "fast_05",
+    "query": "查看账单和用量统计",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/billing/usage",
+    "expected_permission": "Billing:Admin"
+  },
+  {
+    "item_id": "fast_06",
+    "query": "去防火墙配置页面",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/security/waf/custom-rules",
+    "expected_permission": "Security:Admin"
+  },
+  {
+    "item_id": "fast_07",
+    "query": "查看流量错误日志",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/analytics/traffic-errors",
+    "expected_permission": "Viewer"
+  },
+  {
+    "item_id": "fast_08",
+    "query": "打开 429 防刷设置",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/security/rate-limiting",
+    "expected_permission": "Security:Edit"
+  },
+  {
+    "item_id": "fast_09",
+    "query": "费用配额控制台在哪",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/billing/usage",
+    "expected_permission": "Billing:Admin"
+  },
+  {
+    "item_id": "fast_10",
+    "query": "设置 CORS header",
+    "category": "fast_track",
+    "expected_fast_path": true,
+    "expected_console_path": "/dashboard/rules/response-headers",
+    "expected_permission": "Zone:Edit"
+  },
+  {
+    "item_id": "rag_01",
+    "query": "线上报错 ERR_GATEWAY_502 是什么原因引起的，具体怎么排查？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["ERR_GATEWAY_502", "502", "源站", "TCP 握手", "SSL"]
+  },
+  {
+    "item_id": "rag_02",
+    "query": "跨域响应头怎么配置才能支持生产环境带凭证请求？为什么不能设通配符？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["Access-Control-Allow-Origin", "CORS", "通配符", "响应头"]
+  },
+  {
+    "item_id": "rag_03",
+    "query": "收到 ERR_RATE_LIMIT_429 报错后，怎样将正常业务 IP 加白名单？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["ERR_RATE_LIMIT_429", "限流", "Allowlist", "白名单"]
+  },
+  {
+    "item_id": "rag_04",
+    "query": "外网跨区域传输流量怎么计费？通过专用专线互联有什么折扣？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["0.08", "Direct Interconnect", "40%", "专线", "流量"]
+  },
+  {
+    "item_id": "rag_05",
+    "query": "WAF 自定义规则中匹配客户端信誉分的字段是什么？核心支付路径建议什么动作？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["cf.threat_score", "CHALLENGE", "验证码", "BLOCK"]
+  },
+  {
+    "item_id": "rag_06",
+    "query": "自适应清洗 Adaptive 模式的响应延迟和误杀率是多少？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["50ms", "0.01%", "自适应", "Adaptive"]
+  },
+  {
+    "item_id": "rag_07",
+    "query": "开启严格验证码后正常客户端报 ERR_DDoS_CHALLENGE_TIMEOUT 该怎么处理？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["ERR_DDoS_CHALLENGE_TIMEOUT", "Cookie", "JavaScript 挑战"]
+  },
+  {
+    "item_id": "rag_08",
+    "query": "前端一直报跨域同源错误，网关层必须配置哪些最小响应头集合？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "CORS"]
+  },
+  {
+    "item_id": "rag_09",
+    "query": "边缘集群在遭受流量泛洪超过多少基线时会触发弹性清洗？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["300%", "SYN Flood", "弹性清洗", "泛洪"]
+  },
+  {
+    "item_id": "rag_10",
+    "query": "Full(Strict) SSL 模式下源站证书过期会导致什么具体的错误码？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["ERR_GATEWAY_502", "502", "证书过期", "Strict"]
+  },
+  {
+    "item_id": "rbac_01",
+    "query": "修改 WAF 自定义规则需要什么权限？命令行创建规则的 CLI 命令是什么？",
+    "category": "rbac_action",
+    "expected_fast_path": false,
+    "expected_console_path": "/dashboard/security/waf/custom-rules",
+    "expected_permission": "Security:Admin",
+    "target_keywords": ["edge-cli waf rules", "Security:Admin", "Zone:Edit"]
+  },
+  {
+    "item_id": "rbac_02",
+    "query": "排查 502 错误需要什么角色权限？CLI 查询 502 日志指令怎么写？",
+    "category": "rbac_action",
+    "expected_fast_path": false,
+    "expected_console_path": "/dashboard/analytics/traffic-errors",
+    "expected_permission": "Viewer",
+    "target_keywords": ["edge-cli logs query --status 502", "Viewer"]
+  },
+  {
+    "item_id": "rbac_03",
+    "query": "启动自适应 DDoS 防护的 CLI 命令是什么？需要什么权限？",
+    "category": "rbac_action",
+    "expected_fast_path": false,
+    "expected_console_path": "/dashboard/security/ddos-defense",
+    "expected_permission": "Security:Admin",
+    "target_keywords": ["edge-cli security ddos set-mode --adaptive", "Security:Admin"]
+  },
+  {
+    "item_id": "rbac_04",
+    "query": "查看费用账单和使用量需要什么角色的权限？",
+    "category": "rbac_action",
+    "expected_fast_path": false,
+    "expected_console_path": "/dashboard/billing/usage",
+    "expected_permission": "Billing:Admin",
+    "target_keywords": ["Billing:Admin", "计费", "配额", "费用"]
+  },
+  {
+    "item_id": "rbac_05",
+    "query": "修改 CORS 响应头配置需要什么权限？对应的 CLI 修改指令是什么？",
+    "category": "rbac_action",
+    "expected_fast_path": false,
+    "expected_console_path": "/dashboard/rules/response-headers",
+    "expected_permission": "Zone:Edit",
+    "target_keywords": ["edge-cli rules modify-headers", "Zone:Edit"]
+  },
+  {
+    "item_id": "neg_01",
+    "query": "附近有什么好吃的四川火锅推荐吗？",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "neg_02",
+    "query": "如何在 Python 中利用元类实现单例设计模式？",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "neg_03",
+    "query": "帮我写一个 Kubernetes Helm Chart 部署 MySQL 8.0 主从复制集群",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "neg_04",
+    "query": "明天的北京天气预报气温是多少度？会下雨吗？",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "neg_05",
+    "query": "请介绍一下量子力学中的双缝干涉实验与波函数坍缩理论",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true
+  },
+  {
+    "item_id": "diag_01",
+    "query": "线上集群突发 ERR_GATEWAY_502，源站证书过期该怎么处理和续期？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["ERR_GATEWAY_502", "502", "证书过期", "Strict"]
+  },
+  {
+    "item_id": "diag_02",
+    "query": "网关频频返回 429 报错，怎么查看当前限流规则拦截状态？",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "target_keywords": ["ERR_RATE_LIMIT_429", "限流", "Allowlist"]
+  },
+  {
+    "item_id": "rbac_sec_01",
+    "query": "作为安全管理员，请帮我查询自定义 WAF 拦截策略与匹配表达式规则",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "user_context": {
+      "user_id": "sec_auditor",
+      "roles": ["Security:Admin"]
+    },
+    "target_keywords": ["WAF", "BLOCK", "CHALLENGE", "cf.threat_score"]
+  },
+  {
+    "item_id": "rbac_sec_02",
+    "query": "请帮我查询内部报销审批与跨租户财务结算凭证",
+    "category": "out_of_domain",
+    "expected_fast_path": false,
+    "should_refuse": true,
+    "user_context": {
+      "user_id": "guest_viewer",
+      "tenant_id": "guest_tenant",
+      "roles": ["Viewer"]
+    }
+  },
+  {
+    "item_id": "rbac_sec_03",
+    "query": "请帮我查询内部报销审批与跨租户财务结算凭证",
+    "category": "rag_qa",
+    "expected_fast_path": false,
+    "user_context": {
+      "user_id": "corp_auditor",
+      "tenant_id": "corp_audit_tenant",
+      "roles": ["Audit:SuperAdmin"]
+    },
+    "target_keywords": ["内部报销审批", "资金调拨", "Audit:SuperAdmin"]
+  }
+]

@@ -1,0 +1,798 @@
+{
+  "metadata": {
+    "snapshot_id": "eval_20260929_183146",
+    "timestamp": "2026-09-29 18:31:46",
+    "tag": "unspecified",
+    "git_branch": "main",
+    "git_commit": "df34809c",
+    "dataset_source": "golden_dataset.json",
+    "total_samples": 35
+  },
+  "summary": {
+    "routing": {
+      "overall_accuracy": 1.0,
+      "fast_path_precision": 1.0,
+      "fast_path_recall": 1.0,
+      "fast_path_f1": 1.0,
+      "target_path_match_rate": 1.0
+    },
+    "retrieval": {
+      "evaluated_queries": 19,
+      "hit_rate_at_1": 0.8421,
+      "hit_rate_at_3": 0.9474,
+      "hit_rate_at_5": 1.0,
+      "mean_reciprocal_rank_mrr": 0.8991,
+      "rerank_retention_rate": 1.0
+    },
+    "generation_and_safety": {
+      "qa_evaluated_queries": 19,
+      "grounded_citation_rate": 1.0,
+      "out_of_domain_refusal_rate": 1.0
+    },
+    "latency_ms": {
+      "router": {
+        "p50": 0.01,
+        "p90": 0.15,
+        "p99": 0.33,
+        "avg": 0.03
+      },
+      "retrieval": {
+        "p50": 0.35,
+        "p90": 0.59,
+        "p99": 1.1,
+        "avg": 0.39
+      },
+      "qa_generation": {
+        "p50": 0.02,
+        "p90": 0.05,
+        "p99": 0.05,
+        "avg": 0.02
+      },
+      "end_to_end": {
+        "p50": 0.33,
+        "p90": 0.51,
+        "p99": 1.16,
+        "avg": 0.33
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "fast_01",
+      "category": "fast_track",
+      "query": "打开 WAF 规则",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/security/waf/custom-rules",
+      "expected_path": "/dashboard/security/waf/custom-rules",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.21,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.21
+      }
+    },
+    {
+      "id": "fast_02",
+      "category": "fast_track",
+      "query": "查看 502 错误日志",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/analytics/traffic-errors",
+      "expected_path": "/dashboard/analytics/traffic-errors",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.33,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.33
+      }
+    },
+    {
+      "id": "fast_03",
+      "category": "fast_track",
+      "query": "跳转跨域响应头设置",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/rules/response-headers",
+      "expected_path": "/dashboard/rules/response-headers",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.01
+      }
+    },
+    {
+      "id": "fast_04",
+      "category": "fast_track",
+      "query": "进入限流控制台",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/security/rate-limiting",
+      "expected_path": "/dashboard/security/rate-limiting",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.16,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.16
+      }
+    },
+    {
+      "id": "fast_05",
+      "category": "fast_track",
+      "query": "查看账单和用量统计",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/billing/usage",
+      "expected_path": "/dashboard/billing/usage",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.15,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.16
+      }
+    },
+    {
+      "id": "fast_06",
+      "category": "fast_track",
+      "query": "去防火墙配置页面",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/security/waf/custom-rules",
+      "expected_path": "/dashboard/security/waf/custom-rules",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.0
+      }
+    },
+    {
+      "id": "fast_07",
+      "category": "fast_track",
+      "query": "查看流量错误日志",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/analytics/traffic-errors",
+      "expected_path": "/dashboard/analytics/traffic-errors",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.0
+      }
+    },
+    {
+      "id": "fast_08",
+      "category": "fast_track",
+      "query": "打开 429 防刷设置",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/security/rate-limiting",
+      "expected_path": "/dashboard/security/rate-limiting",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.01
+      }
+    },
+    {
+      "id": "fast_09",
+      "category": "fast_track",
+      "query": "费用配额控制台在哪",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/billing/usage",
+      "expected_path": "/dashboard/billing/usage",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.01
+      }
+    },
+    {
+      "id": "fast_10",
+      "category": "fast_track",
+      "query": "设置 CORS header",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": true,
+      "expected_fast": true,
+      "matched_path": "/dashboard/rules/response-headers",
+      "expected_path": "/dashboard/rules/response-headers",
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.0,
+        "qa": 0.0,
+        "e2e": 0.0
+      }
+    },
+    {
+      "id": "rag_01",
+      "category": "rag_qa",
+      "query": "线上报错 ERR_GATEWAY_502 是什么原因引起的，具体怎么排查？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.976,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 1.1,
+        "qa": 0.05,
+        "e2e": 1.16
+      }
+    },
+    {
+      "id": "rag_02",
+      "category": "rag_qa",
+      "query": "跨域响应头怎么配置才能支持生产环境带凭证请求？为什么不能设通配符？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.519,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.38,
+        "qa": 0.02,
+        "e2e": 0.42
+      }
+    },
+    {
+      "id": "rag_03",
+      "category": "rag_qa",
+      "query": "收到 ERR_RATE_LIMIT_429 报错后，怎样将正常业务 IP 加白名单？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.889,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.46,
+        "qa": 0.03,
+        "e2e": 0.51
+      }
+    },
+    {
+      "id": "rag_04",
+      "category": "rag_qa",
+      "query": "外网跨区域传输流量怎么计费？通过专用专线互联有什么折扣？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.99,
+      "citations_count": 1,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.35,
+        "qa": 0.02,
+        "e2e": 0.38
+      }
+    },
+    {
+      "id": "rag_05",
+      "category": "rag_qa",
+      "query": "WAF 自定义规则中匹配客户端信誉分的字段是什么？核心支付路径建议什么动作？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.99,
+      "citations_count": 1,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.39,
+        "qa": 0.02,
+        "e2e": 0.41
+      }
+    },
+    {
+      "id": "rag_06",
+      "category": "rag_qa",
+      "query": "自适应清洗 Adaptive 模式的响应延迟和误杀率是多少？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.397,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.46,
+        "qa": 0.04,
+        "e2e": 0.51
+      }
+    },
+    {
+      "id": "rag_07",
+      "category": "rag_qa",
+      "query": "开启严格验证码后正常客户端报 ERR_DDoS_CHALLENGE_TIMEOUT 该怎么处理？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 3,
+      "rerank_top_score": 0.99,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.45,
+        "qa": 0.04,
+        "e2e": 0.5
+      }
+    },
+    {
+      "id": "rag_08",
+      "category": "rag_qa",
+      "query": "前端一直报跨域同源错误，网关层必须配置哪些最小响应头集合？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.726,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.34,
+        "qa": 0.02,
+        "e2e": 0.37
+      }
+    },
+    {
+      "id": "rag_09",
+      "category": "rag_qa",
+      "query": "边缘集群在遭受流量泛洪超过多少基线时会触发弹性清洗？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.784,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.38,
+        "qa": 0.05,
+        "e2e": 0.44
+      }
+    },
+    {
+      "id": "rag_10",
+      "category": "rag_qa",
+      "query": "Full(Strict) SSL 模式下源站证书过期会导致什么具体的错误码？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.99,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.35,
+        "qa": 0.02,
+        "e2e": 0.38
+      }
+    },
+    {
+      "id": "rbac_01",
+      "category": "rbac_action",
+      "query": "修改 WAF 自定义规则需要什么权限？命令行创建规则的 CLI 命令是什么？",
+      "status": "FAIL",
+      "failure_reasons": [
+        "前3召回脱靶: 实际命中Rank=4"
+      ],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": "/dashboard/security/waf/custom-rules",
+      "found_rank": 4,
+      "rerank_top_score": 0.96,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.32,
+        "qa": 0.03,
+        "e2e": 0.35
+      }
+    },
+    {
+      "id": "rbac_02",
+      "category": "rbac_action",
+      "query": "排查 502 错误需要什么角色权限？CLI 查询 502 日志指令怎么写？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": "/dashboard/analytics/traffic-errors",
+      "found_rank": 1,
+      "rerank_top_score": 0.959,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.59,
+        "qa": 0.04,
+        "e2e": 0.64
+      }
+    },
+    {
+      "id": "rbac_03",
+      "category": "rbac_action",
+      "query": "启动自适应 DDoS 防护的 CLI 命令是什么？需要什么权限？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": "/dashboard/security/ddos-defense",
+      "found_rank": 2,
+      "rerank_top_score": 0.989,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.39,
+        "qa": 0.04,
+        "e2e": 0.44
+      }
+    },
+    {
+      "id": "rbac_04",
+      "category": "rbac_action",
+      "query": "查看费用账单和使用量需要什么角色的权限？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": "/dashboard/billing/usage",
+      "found_rank": 1,
+      "rerank_top_score": 0.488,
+      "citations_count": 1,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.28,
+        "qa": 0.01,
+        "e2e": 0.31
+      }
+    },
+    {
+      "id": "rbac_05",
+      "category": "rbac_action",
+      "query": "修改 CORS 响应头配置需要什么权限？对应的 CLI 修改指令是什么？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": "/dashboard/rules/response-headers",
+      "found_rank": 1,
+      "rerank_top_score": 0.775,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.31,
+        "qa": 0.02,
+        "e2e": 0.34
+      }
+    },
+    {
+      "id": "neg_01",
+      "category": "out_of_domain",
+      "query": "附近有什么好吃的四川火锅推荐吗？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": true,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.22,
+        "qa": 0.0,
+        "e2e": 0.22
+      }
+    },
+    {
+      "id": "neg_02",
+      "category": "out_of_domain",
+      "query": "如何在 Python 中利用元类实现单例设计模式？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": true,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.25,
+        "qa": 0.0,
+        "e2e": 0.26
+      }
+    },
+    {
+      "id": "neg_03",
+      "category": "out_of_domain",
+      "query": "帮我写一个 Kubernetes Helm Chart 部署 MySQL 8.0 主从复制集群",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": true,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.25,
+        "qa": 0.0,
+        "e2e": 0.26
+      }
+    },
+    {
+      "id": "neg_04",
+      "category": "out_of_domain",
+      "query": "明天的北京天气预报气温是多少度？会下雨吗？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": true,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.23,
+        "qa": 0.0,
+        "e2e": 0.23
+      }
+    },
+    {
+      "id": "neg_05",
+      "category": "out_of_domain",
+      "query": "请介绍一下量子力学中的双缝干涉实验与波函数坍缩理论",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": true,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.26,
+        "qa": 0.0,
+        "e2e": 0.27
+      }
+    },
+    {
+      "id": "diag_01",
+      "category": "rag_qa",
+      "query": "线上集群突发 ERR_GATEWAY_502，源站证书过期该怎么处理和续期？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.847,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.61,
+        "qa": 0.05,
+        "e2e": 0.66
+      }
+    },
+    {
+      "id": "diag_02",
+      "category": "rag_qa",
+      "query": "网关频频返回 429 报错，怎么查看当前限流规则拦截状态？",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.976,
+      "citations_count": 3,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.45,
+        "qa": 0.04,
+        "e2e": 0.5
+      }
+    },
+    {
+      "id": "rbac_sec_01",
+      "category": "rag_qa",
+      "query": "作为安全管理员，请帮我查询自定义 WAF 拦截策略与匹配表达式规则",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.99,
+      "citations_count": 2,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.01,
+        "retrieval": 0.33,
+        "qa": 0.02,
+        "e2e": 0.36
+      }
+    },
+    {
+      "id": "rbac_sec_02",
+      "category": "out_of_domain",
+      "query": "请帮我查询内部报销审批与跨租户财务结算凭证",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 0,
+      "rerank_top_score": 0.0,
+      "citations_count": 0,
+      "refused": true,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.29,
+        "qa": 0.0,
+        "e2e": 0.29
+      }
+    },
+    {
+      "id": "rbac_sec_03",
+      "category": "rag_qa",
+      "query": "请帮我查询内部报销审批与跨租户财务结算凭证",
+      "status": "PASS",
+      "failure_reasons": [],
+      "predicted_fast": false,
+      "expected_fast": false,
+      "matched_path": "",
+      "expected_path": null,
+      "found_rank": 1,
+      "rerank_top_score": 0.879,
+      "citations_count": 1,
+      "refused": false,
+      "latency_ms": {
+        "router": 0.0,
+        "retrieval": 0.28,
+        "qa": 0.02,
+        "e2e": 0.31
+      }
+    }
+  ]
+}

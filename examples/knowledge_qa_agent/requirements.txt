@@ -1,0 +1,37 @@
+# =============================================================================
+# 知识库与控制台 Agent (Knowledge QA Agent) 依赖配置
+# =============================================================================
+
+# 1. 核心工业级文档解析引擎 (推荐生产环境安装)
+# 遵循 CommonMark / GFM 规范的高性能语法树 AST 解析器
+markdown-it-py>=3.0.0
+# Markdown 扩展插件 (支持 FrontMatter 提取、表格增强、锚点属性等)
+mdit-py-plugins>=0.4.0
+
+# 2. 网页正文主体提取与去噪引擎 (HTML Readability & Boilerplate Removal)
+# 自动剥离导航栏、侧边栏、广告与页脚，将复杂 HTML 网页清洗为纯净语义 Markdown
+trafilatura>=1.12.0
+
+# 3. 工业级多模型统一客户端适配器 (Universal Multi-Platform LLM Engine)
+# 支持统一调用 100+ 大模型平台 (Anthropic Claude, Google Gemini, AWS Bedrock, OpenAI, Azure, DeepSeek, Ollama 等)
+litellm>=1.40.0
+python-dotenv>=1.0.0
+tenacity>=8.0.0
+
+# 4. 工业级本地轻量向量化引擎 (基于 ONNX Runtime，告别 PyTorch 臃肿)
+# 纯 CPU 高性能嵌入，内置支持 BAAI/bge-small-zh-v1.5 等 SOTA 稠密模型
+fastembed>=0.3.0
+socksio>=1.0.0
+
+# 5. 可选企业级多格式解析与版面分析引擎 (PDF / Word / PPTX / 扫描件)
+# 若需接入复杂版面、双栏学术论文、多页表格或扫描件 OCR，可安装 Docling 或 Unstructured：
+# docling>=2.0.0
+# unstructured[all-docs]>=0.14.0
+# pypdf>=4.0.0
+
+# 3. 可选生产级向量检索与嵌入模型
+# 默认样例使用内置纯 Python 余弦向量计算与 SQLite BLOB 存储。
+# 如需对接本地深度学习嵌入模型或超大规模百万级检索，可取消以下注释：
+# sentence-transformers>=3.0.0
+# faiss-cpu>=1.7.4
+# numpy>=1.24.0

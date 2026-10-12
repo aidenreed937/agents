@@ -1,0 +1,27 @@
+{
+  "paths": {
+    "default_dataset": "eval_data/golden_dataset.json",
+    "data_dir": "data",
+    "history_dir": "eval_history",
+    "default_report": "reports/benchmark_report.md"
+  },
+  "retrieval": {
+    "top_k_candidates": 6,
+    "top_n_rerank": 3,
+    "rrf_k": 60,
+    "min_relevance_threshold": 0.22,
+    "chunk_child_chars": 260,
+    "chunk_overlap_chars": 40
+  },
+  "gate_thresholds": {
+    "routing_overall_acc_min": 0.90,
+    "routing_fast_f1_min": 0.90,
+    "routing_path_match_min": 0.95,
+    "hit_rate_at_1_min": 0.75,
+    "hit_rate_at_3_min": 0.85,
+    "mrr_min": 0.80,
+    "rerank_retention_min": 0.90,
+    "grounded_citation_min": 0.95,
+    "out_of_domain_refusal_min": 1.00
+  }
+}

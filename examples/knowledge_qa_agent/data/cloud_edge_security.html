@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>云边缘安全与DDoS防护操作指南</title>
+  <meta name="author" content="云平台网络安全架构组">
+  <meta name="date" content="2026-03-15">
+  <style>
+    body { font-family: sans-serif; line-height: 1.6; }
+    nav, footer, aside { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+  <!-- 网页噪音 1: 顶部导航栏 (入库前必须剔除) -->
+  <nav>
+    <a href="/">首页</a> | <a href="/products">产品列表</a> | <a href="/pricing">企业定价</a> | <a href="/login">立即登录</a>
+    <span>[促销] 购买年度企业网关套餐立享 8 折优惠！</span>
+  </nav>
+
+  <!-- 网页噪音 2: 侧边栏推广与热度文章 (入库前必须剔除) -->
+  <aside>
+    <h3>热门推荐文章</h3>
+    <ul>
+      <li><a href="/post/1">2026年十大网络安全漏洞预测</a></li>
+      <li><a href="/post/2">如何使用边缘云降低 60% 回源带宽</a></li>
+    </ul>
+    <div>广告：点击申请免费试用</div>
+  </aside>
+
+  <!-- 核心主体内容 (正文) -->
+  <main>
+    <h1>云边缘安全与DDoS防护操作指南</h1>
+    <p>本指南适用于企业版与旗舰版边缘集群，指导运维团队在遭受流量泛洪攻击时快速启动弹性清洗策略。</p>
+
+    <h2>1. 边缘弹性 DDoS 防护配置</h2>
+    <p>当系统检测到边缘节点 SYN Flood、UDP Amplification 或 HTTP CC 攻击流量突增超过基线 300% 时，将触发自适应弹性清洗防护。</p>
+    <p>
+      控制台路径: /dashboard/security/ddos-defense<br>
+      CLI 命令: edge-cli security ddos set-mode --adaptive<br>
+      权限要求: Security:Admin
+    </p>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>防护模式</th>
+          <th>响应延迟</th>
+          <th>适用场景</th>
+          <th>误杀率控制</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>标准监控 (Standard)</td>
+          <td>无延迟</td>
+          <td>日常平稳流量巡检</td>
+          <td>0% (仅告警不拦截)</td>
+        </tr>
+        <tr>
+          <td>自适应清洗 (Adaptive)</td>
+          <td>&lt; 50ms</td>
+          <td>遭遇突发流量洪峰</td>
+          <td>&lt; 0.01% (动态令牌验证)</td>
+        </tr>
+        <tr>
+          <td>严格验证码 (Under Attack)</td>
+          <td>需交互</td>
+          <td>极高危 CC 穿透攻击</td>
+          <td>适度影响非浏览器客户端</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2. 常见系统错误排查与日志审计</h2>
+    <p>如果开启严格验证码模式后，正常 API 客户端收到 <code>ERR_DDoS_CHALLENGE_TIMEOUT</code> 报错，请检查客户端是否支持 Cookie 持久化与 JavaScript 挑战运算。</p>
+    控制台路径: /dashboard/analytics/traffic-errors
+    权限要求: Viewer
+  </main>
+
+  <!-- 网页噪音 3: 底部备案与隐私说明 (入库前必须剔除) -->
+  <footer>
+    <p>© 2026 智能云平台技术有限公司 版权所有 | 京ICP备12345678号-1</p>
+    <p><a href="/privacy">隐私政策</a> | <a href="/terms">服务条款</a> | <a href="/compliance">合规白皮书</a></p>
+  </footer>
+
+</body>
+</html>

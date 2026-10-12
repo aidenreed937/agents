@@ -1,0 +1,56 @@
+[
+  {
+    "id": "stress_multihop_01",
+    "category": "rag_qa",
+    "query": "现场测得3号主变油色谱总烃达 220 uL/L，同时20℃下绝缘电阻吸收比为 1.15，绕组介损 tanδ 达 1.6%。请结合 DL/T 722 与 DL/T 596 规程，综合研判设备内部存在何种复合隐患，并给出处置建议。",
+    "target_keywords": ["受潮", "过热", "1.3", "150"],
+    "expected_fast_path": false,
+    "expected_console_path": null,
+    "should_refuse": false
+  },
+  {
+    "id": "stress_negative_01",
+    "category": "rag_qa",
+    "query": "请对比 330kV 主变压器与 330kV 电压互感器 (PT) 在总烃注意值基线上的区别，互感器总烃多少算超标？",
+    "target_keywords": ["10", "150", "互感器", "PT"],
+    "expected_fast_path": false,
+    "expected_console_path": null,
+    "should_refuse": false
+  },
+  {
+    "id": "stress_calculation_01",
+    "category": "rag_qa",
+    "query": "某主变特征气体实测值为：C2H2=10 uL/L, C2H4=100 uL/L, CH4=200 uL/L, H2=100 uL/L, C2H6=20 uL/L。请计算三项特征气体比值，推算改良三比值编码组合，并查表判定故障类型。",
+    "target_keywords": ["三比值", "0, 2, 2", "0 2 2", "高温过热", "700"],
+    "expected_fast_path": false,
+    "expected_console_path": null,
+    "should_refuse": false
+  },
+  {
+    "id": "stress_version_01",
+    "category": "rag_qa",
+    "query": "现行 DL/T 596 规程中对 220kV 变压器绕组介质损耗因数 tanδ 的合格标准是多少？历史旧版曾允许的 1.5% 目前是否依然有效？",
+    "target_keywords": ["1.0", "废止", "现行", "无效"],
+    "expected_fast_path": false,
+    "expected_console_path": null,
+    "should_refuse": false
+  },
+  {
+    "id": "stress_negative_02",
+    "category": "rag_qa",
+    "query": "电流互感器 (CT) 的总烃和乙炔注意值基线分别是多少？能否套用主变压器的 150 uL/L 标准？",
+    "target_keywords": ["20", "1", "严禁", "不能"],
+    "expected_fast_path": false,
+    "expected_console_path": null,
+    "should_refuse": false
+  },
+  {
+    "id": "stress_multihop_02",
+    "category": "rag_qa",
+    "query": "330kV主变油色谱检出乙炔 C2H2 为 8.0 uL/L，绝缘油击穿电压降至 36 kV。请结合色谱与绝缘油试验指标判断故障性质与调度决策。",
+    "target_keywords": ["放电", "50", "40", "紧急停运"],
+    "expected_fast_path": false,
+    "expected_console_path": null,
+    "should_refuse": false
+  }
+]
