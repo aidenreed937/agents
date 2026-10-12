@@ -11,6 +11,7 @@
 import os
 import re
 import html
+import json
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -46,6 +47,78 @@ MEMORY_ANCHORS = {
     "card-06-01": ["RAG 评测三元组", "Agent 任务完成率", "Trace/Span 树状耗时", "低成本 CI 回归基准"],
     "card-06-02": ["直接 vs 间接注入", "XML 标签结构化定界", "决策与物理执行权限解耦", "输出金丝雀与 PII 脱敏"],
 }
+
+# ==============================================================================
+# 服务端 KaTeX 静态预渲染引擎 (零客户端依赖，完全规避 file:// 协议与跨域问题)
+# ==============================================================================
+
+class ServerKaTeX:
+    def __init__(self, katex_js_path: Path):
+        self.katex_js = katex_js_path
+        self.cache = {}
+        self.available = self._check_available()
+
+    def _check_available(self) -> bool:
+        if not self.katex_js.exists():
+            return False
+        try:
+            res = subprocess.run(["node", "-v"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            return res.returncode == 0
+        except Exception:
+            return False
+
+    def batch_prerender(self, formulas: list):
+        """批量渲染所有公式并存入内存缓存"""
+        if not self.available or not formulas:
+            return
+
+        needed = [item for item in formulas if f"{item['type']}:{item['latex']}" not in self.cache]
+        if not needed:
+            return
+
+        js_script = f"""
+        const katex = require('{self.katex_js.resolve()}');
+        let input = '';
+        process.stdin.on('data', c => input += c);
+        process.stdin.on('end', () => {{
+            const items = JSON.parse(input);
+            const res = {{}};
+            for (const it of items) {{
+                const key = it.type + ':' + it.latex;
+                try {{
+                    res[key] = katex.renderToString(it.latex, {{
+                        displayMode: it.type === 'block',
+                        throwOnError: false
+                    }});
+                }} catch(e) {{
+                    res[key] = it.latex;
+                }}
+            }}
+            process.stdout.write(JSON.stringify(res));
+        }});
+        """
+        try:
+            p = subprocess.Popen(
+                ["node", "-e", js_script],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            stdout, stderr = p.communicate(input=json.dumps(needed))
+            if p.returncode == 0:
+                results = json.loads(stdout)
+                self.cache.update(results)
+        except Exception as e:
+            print(f"[!] KaTeX 服务端预渲染调用异常: {e}")
+
+    def render(self, latex: str, display: bool = False) -> str:
+        key = ("block:" if display else "inline:") + latex
+        if key in self.cache:
+            return self.cache[key]
+        return f"$${latex}$$" if display else f"${latex}$"
+
+KATEX_ENGINE = ServerKaTeX(BASE_DIR / "assets" / "katex" / "katex.min.js")
 
 # ==============================================================================
 # 原生工业级矢量 SVG 架构图 (100% 打印保真)
@@ -240,6 +313,29 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
         md_text
     )
 
+    # 步骤 1.5: 提取数学公式并替换为占位符，防止 Markdown 格式化破坏公式
+    math_placeholders = {}
+    math_counter = 0
+
+    def extract_block_math(match):
+        nonlocal math_counter
+        raw = match.group(1).strip()
+        ph = f"KATEXBLOCKPH_{math_counter}"
+        math_placeholders[ph] = ("block", raw)
+        math_counter += 1
+        return f"\n\n{ph}\n\n"
+
+    def extract_inline_math(match):
+        nonlocal math_counter
+        raw = match.group(1).strip()
+        ph = f"KATEXINLINEPH_{math_counter}"
+        math_placeholders[ph] = ("inline", raw)
+        math_counter += 1
+        return ph
+
+    md_text = re.sub(r'\$\$(.+?)\$\$', extract_block_math, md_text, flags=re.DOTALL)
+    md_text = re.sub(r'(?<!\$)\$([^\$\n]+?)\$(?!\$)', extract_inline_math, md_text)
+
     lines = md_text.splitlines()
     html_lines = []
     in_code_block = False
@@ -250,6 +346,7 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
     in_list = False
     list_type = "ul"
     in_callout = False
+    callout_type = ""
 
     def flush_table():
         nonlocal in_table, table_rows
@@ -282,9 +379,10 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
         return out
 
     def close_callout_if_open():
-        nonlocal in_callout
+        nonlocal in_callout, callout_type
         if in_callout:
             in_callout = False
+            callout_type = ""
             return "</div>"
         return ""
 
@@ -292,8 +390,8 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
         text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', text)
         text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
         text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
-        text = re.sub(r'^- \[ \]\s*', r'<span class="chk-box"></span> ', text)
-        text = re.sub(r'^- \[x\]\s*', r'<span class="chk-box checked">✓</span> ', text)
+        text = re.sub(r'^(?:-\s*)?\[ \]\s*', r'<span class="chk-box"></span> ', text)
+        text = re.sub(r'^(?:-\s*)?\[x\]\s*', r'<span class="chk-box checked">✓</span> ', text)
         return text
 
     i = 0
@@ -309,6 +407,16 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
                 html_lines.append(flush_list())
             html_lines.append(close_callout_if_open())
             html_lines.append(stripped)
+            i += 1
+            continue
+
+        if stripped.startswith("KATEXBLOCKPH_") and stripped in math_placeholders:
+            if in_table:
+                html_lines.append(flush_table())
+            if in_list:
+                html_lines.append(flush_list())
+            html_lines.append(close_callout_if_open())
+            html_lines.append(f'<div class="katex-display-container">{stripped}</div>')
             i += 1
             continue
 
@@ -366,22 +474,27 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
             if "30 秒电梯回答" in title:
                 html_lines.append(close_callout_if_open())
                 in_callout = True
+                callout_type = "elevator"
                 html_lines.append('<div class="callout callout-elevator"><div class="callout-label"><span class="icon">⚡</span> 1. 30 秒电梯口述回答</div>')
             elif "深入原理" in title:
                 html_lines.append(close_callout_if_open())
                 in_callout = True
+                callout_type = "deep"
                 html_lines.append('<div class="callout callout-deep"><div class="callout-label"><span class="icon">🔍</span> 2. 深入原理与机制</div>')
-            elif "工程取舍与边界" in title:
+            elif "工程取舍" in title:
                 html_lines.append(close_callout_if_open())
                 in_callout = True
+                callout_type = "tradeoff"
                 html_lines.append('<div class="callout callout-tradeoff"><div class="callout-label"><span class="icon">⚖️</span> 3. 工程取舍与防线边界</div>')
             elif "高频追问应对" in title:
                 html_lines.append(close_callout_if_open())
                 in_callout = True
+                callout_type = "questions"
                 html_lines.append('<div class="callout callout-questions"><div class="callout-label"><span class="icon">🎯</span> 4. 高频追问深挖应对</div>')
             elif "自测标准" in title:
                 html_lines.append(close_callout_if_open())
                 in_callout = True
+                callout_type = "check"
                 html_lines.append('<div class="callout callout-check"><div class="callout-label"><span class="icon">⏱️</span> 5. 90 秒自测标准</div>')
             else:
                 html_lines.append(close_callout_if_open())
@@ -400,20 +513,31 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
 
         # 列表处理
         list_match = re.match(r'^[*-]\s+(.*)$', stripped)
-        num_match = re.match(r'^\d+\.\s+(.*)$', stripped)
+        num_match = re.match(r'^(\d+)\.\s+(.*)$', stripped)
         if list_match or num_match:
             cur_type = "ol" if num_match else "ul"
-            content = num_match.group(1) if num_match else list_match.group(1)
+            content = num_match.group(2) if num_match else list_match.group(1)
+            num_val = int(num_match.group(1)) if num_match else 1
+            start_attr = f' start="{num_val}"' if cur_type == "ol" and num_val > 1 else ''
             if not in_list:
                 in_list = True
                 list_type = cur_type
-                html_lines.append(f'<{list_type}>')
+                html_lines.append(f'<{list_type}{start_attr}>')
             elif in_list and list_type != cur_type:
                 html_lines.append(flush_list())
                 in_list = True
                 list_type = cur_type
-                html_lines.append(f'<{list_type}>')
-            html_lines.append(f'<li>{inline_formatting(content)}</li>')
+                html_lines.append(f'<{list_type}{start_attr}>')
+
+            if callout_type == "questions":
+                if "追问" in content:
+                    html_lines.append(f'<li class="qa-question">{inline_formatting(content)}</li>')
+                elif "应对" in content or "核心逻辑" in content:
+                    html_lines.append(f'<li class="qa-answer">{inline_formatting(content)}</li>')
+                else:
+                    html_lines.append(f'<li class="qa-sub">{inline_formatting(content)}</li>')
+            else:
+                html_lines.append(f'<li>{inline_formatting(content)}</li>')
             i += 1
             continue
         elif in_list and stripped == "":
@@ -462,7 +586,13 @@ def markdown_to_html(md_text: str, card_key: str = None) -> str:
 
     final_html = "\n".join(html_lines)
 
-    # 步骤 2: 将占位符安全替换为完整高精度的原生 SVG
+    # 步骤 2: 将数学公式占位符替换为预渲染的静态 KaTeX 节点
+    for ph, (m_type, latex) in math_placeholders.items():
+        is_block = (m_type == "block")
+        rendered_node = KATEX_ENGINE.render(latex, display=is_block)
+        final_html = final_html.replace(ph, rendered_node)
+
+    # 步骤 3: 将占位符安全替换为完整高精度的原生 SVG
     final_html = final_html.replace("<!-- PLACEHOLDER_CAREER_NARRATIVE -->", get_svg_career_narrative())
     final_html = final_html.replace("<!-- PLACEHOLDER_SYSTEM_ARCHITECTURE -->", get_svg_system_architecture())
 
@@ -500,6 +630,17 @@ def collect_content() -> dict:
 
 def build_html(data: dict) -> str:
     """构建精美视觉与打印就绪的完整 HTML"""
+    # 步骤 0: 统一扫描收集所有文档与卡片中的公式，执行单次批量预渲染
+    all_formulas = []
+    docs = [data.get("narrative", ""), data.get("project_story", "")] + [c["content"] for c in data.get("cards", [])]
+    for doc in docs:
+        for bm in re.findall(r'\$\$(.+?)\$\$', doc, re.DOTALL):
+            all_formulas.append({"type": "block", "latex": bm.strip()})
+        doc_sub = re.sub(r'\$\$.+?\$\$', '', doc, flags=re.DOTALL)
+        for im in re.findall(r'(?<!\$)\$([^\$\n]+?)\$(?!\$)', doc_sub):
+            all_formulas.append({"type": "inline", "latex": im.strip()})
+    KATEX_ENGINE.batch_prerender(all_formulas)
+
     cards_count = len(data["cards"])
     html_parts = []
 
@@ -655,12 +796,56 @@ def build_html(data: dict) -> str:
 
     body_content = "\n".join(html_parts)
 
+    # 动态加载并内联 KaTeX 样式以确保离线 100% 可用且不受本地 file:// 策略影响
+    katex_css_path = BASE_DIR / "assets" / "katex" / "katex.min.css"
+    inlined_katex_css = ""
+    if katex_css_path.exists():
+        raw_css = katex_css_path.read_text(encoding="utf-8")
+        inlined_katex_css = raw_css.replace("url(fonts/", "url(assets/katex/fonts/")
+
     full_html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>高级全栈与 Agent 应用工程师 面试通关手册</title>
+    <!-- KaTeX 数学公式支持 (已静态预渲染 MathML+DOM，同时提供样式与客户端动态兜底) -->
+    <link rel="stylesheet" href="assets/katex/katex.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';">
+    <script defer src="assets/katex/katex.min.js" onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';s.defer=true;document.head.appendChild(s);"></script>
+    <script defer src="assets/katex/auto-render.min.js" onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js';s.defer=true;document.head.appendChild(s);"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {{
+            function renderMath() {{
+                if (typeof renderMathInElement === "function") {{
+                    renderMathInElement(document.body, {{
+                        delimiters: [
+                            {{left: "$$", right: "$$", display: true}},
+                            {{left: "$", right: "$", display: false}},
+                            {{left: "\\\\(", right: "\\\\)", display: false}},
+                            {{left: "\\\\[", right: "\\\\]", display: true}}
+                        ],
+                        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+                        throwOnError: false
+                    }});
+                }} else {{
+                    setTimeout(renderMath, 60);
+                }}
+            }}
+            renderMath();
+        }});
+    </script>
     <style>
+        /* 内联 KaTeX 样式 (保证零外部请求开箱即用) */
+        {inlined_katex_css}
+
+        /* KaTeX 紧凑排版适配与展示块容器 */
+        .katex-display-container {{
+            text-align: center;
+            margin: 3px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }}
+        .katex {{ font-size: 1.02em; line-height: 1.2; }}
+        .katex-display {{ margin: 2px 0 !important; }}
         @page {{
             size: A4 portrait;
             margin: 6mm 8mm 8mm 8mm;
@@ -981,13 +1166,67 @@ def build_html(data: dict) -> str:
         .callout ul, .callout ol {{ margin: 1px 0 2px 0; padding-left: 15px; }}
         .callout li {{ margin-bottom: 1.5px; }}
 
+        /* 高频追问 Q&A 分层样式 */
+        .callout-questions ul, .callout-questions ol {{
+            list-style: none !important;
+            padding-left: 0 !important;
+            margin: 2px 0 !important;
+        }}
+        .callout-questions li.qa-question {{
+            font-weight: 700;
+            color: #4c1d95;
+            margin-top: 4px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            list-style: none !important;
+        }}
+        .callout-questions li.qa-question::before {{
+            content: "❓";
+            font-size: 7.5pt;
+            flex-shrink: 0;
+        }}
+        .callout-questions li.qa-answer {{
+            margin-left: 14px;
+            margin-bottom: 3px;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.7);
+            border-left: 2.5px solid #a855f7;
+            border-radius: 0 4px 4px 0;
+            color: #1e293b;
+            font-size: 8.5pt;
+            list-style: none !important;
+        }}
+        .callout-questions li.qa-sub {{
+            margin-left: 26px;
+            margin-bottom: 1px;
+            color: #334155;
+            font-size: 8.3pt;
+            list-style-type: disc !important;
+        }}
+
+        /* 90秒自测项紧凑无原点样式 */
+        .callout-check ul {{
+            list-style: none !important;
+            padding-left: 2px !important;
+            margin: 2px 0 !important;
+        }}
+        .callout-check li {{
+            margin-bottom: 2.5px;
+            display: flex;
+            align-items: flex-start;
+        }}
+
         .chk-box {{
             display: inline-block;
             width: 11px;
             height: 11px;
+            min-width: 11px;
             border: 1.5px solid #16a34a;
             border-radius: 2px;
-            margin-right: 4px;
+            margin-right: 5px;
+            margin-top: 2px;
             vertical-align: middle;
             text-align: center;
             line-height: 9px;
