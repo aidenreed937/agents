@@ -3,8 +3,8 @@ import { useExpenseStore } from '../store/useExpenseStore';
 import { useHitlStore } from '../store/useHitlStore';
 
 export function Navigation() {
-  const activeTab = useExpenseStore((state) => state.activeTab);
-  const setActiveTab = useExpenseStore((state) => state.setActiveTab);
+  const activeRole = useExpenseStore((state) => state.activeRole);
+  const setActiveRole = useExpenseStore((state) => state.setActiveRole);
   const tasks = useHitlStore((state) => state.tasks);
 
   const pendingCount = tasks.length;
@@ -12,27 +12,32 @@ export function Navigation() {
   return (
     <nav className="nav-tabs">
       <button
-        className={`tab-btn ${activeTab === 'employee' ? 'active' : ''}`}
-        onClick={() => setActiveTab('employee')}
+        type="button"
+        className={`tab-btn ${activeRole === 'employee' ? 'active' : ''}`}
+        onClick={() => setActiveRole('employee')}
       >
-        员工智能报销 (Employee Portal)
+        <span>员工智能报销端 (Employee App)</span>
       </button>
+
       <button
-        className={`tab-btn ${activeTab === 'hitl' ? 'active' : ''}`}
-        onClick={() => setActiveTab('hitl')}
+        type="button"
+        className={`tab-btn ${activeRole === 'approver' ? 'active' : ''}`}
+        onClick={() => setActiveRole('approver')}
       >
-        人在回路审批待办 (HITL Center)
+        <span>主管与财务审批中心 (Approval Portal)</span>
         {pendingCount > 0 && (
           <span className="badge badge-alert" id="hitlBadge">
-            {pendingCount}
+            {pendingCount} 待特批
           </span>
         )}
       </button>
+
       <button
-        className={`tab-btn ${activeTab === 'graph' ? 'active' : ''}`}
-        onClick={() => setActiveTab('graph')}
+        type="button"
+        className={`tab-btn ${activeRole === 'ops' ? 'active' : ''}`}
+        onClick={() => setActiveRole('ops')}
       >
-        LangGraph 状态图与拓扑 (StateGraph)
+        <span>运维与可观测大盘 (Ops & Diagnostics)</span>
       </button>
     </nav>
   );

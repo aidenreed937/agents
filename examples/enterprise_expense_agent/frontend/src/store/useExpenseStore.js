@@ -16,12 +16,32 @@ const INITIAL_NODES = {
   create_draft: 'waiting'
 };
 
+const FRIENDLY_STEP_MAPPING = {
+  security_guardrail: '正在进行数据安全检查与隐私信息脱敏...',
+  parse_intent: '正在智能理解您的报销意图并抽取金额、发票要素...',
+  fetch_data_assets: '正在同步查询全国税控发票库与 OA 出差行程单...',
+  cross_validate_claim: '正在交叉比对发票票面与实际行程事实，生成权威申请契约...',
+  governance_check: '正在核验企业差旅标准与风控合规额度...',
+  create_draft: '所有校验已通过，正在生成财务预审草单凭证...'
+};
+
+// 获取初始角色（支持从 URL Hash 读取：#employee, #approver, #ops）
+const getInitialRole = () => {
+  const hash = window.location.hash.replace('#', '').toLowerCase();
+  if (['employee', 'approver', 'ops'].includes(hash)) {
+    return hash;
+  }
+  return 'employee';
+};
+
 export const useExpenseStore = create((set, get) => ({
+  // 独立角色视角: 'employee' (员工端) | 'approver' (审批端) | 'ops' (运维端)
+  activeRole: getInitialRole(),
+
   // 连接与服务状态
   backendUrl: 'http://127.0.0.1:8000',
   isConnected: false,
   engineInfo: '',
-  activeTab: 'employee', // 'employee' | 'hitl' | 'graph'
 
   // 预置场景
   presets: [],
@@ -32,11 +52,12 @@ export const useExpenseStore = create((set, get) => ({
   rawQuery: '',
   isSubmitting: false,
   currentStatus: 'IDLE',
+  friendlyStepText: '',
 
-  // 节点流水线状态
+  // 节点流水线状态 (运维与底层调用)
   nodeStatus: { ...INITIAL_NODES },
 
-  // 终端实时日志
+  // 终端实时日志 (运维端展示)
   logs: [
     {
       id: 'init-1',
@@ -51,7 +72,10 @@ export const useExpenseStore = create((set, get) => ({
   result: null,
 
   // 动作
-  setActiveTab: (tab) => set({ activeTab: tab }),
+  setActiveRole: (role) => {
+    window.location.hash = role;
+    set({ activeRole: role });
+  },
 
   setBackendUrl: (url) => {
     setBaseUrl(url);
@@ -104,6 +128,7 @@ export const useExpenseStore = create((set, get) => ({
       rawQuery: '',
       threadId: '',
       currentStatus: 'IDLE',
+      friendlyStepText: '',
       nodeStatus: { ...INITIAL_NODES },
       result: null,
       logs: [
@@ -140,6 +165,7 @@ export const useExpenseStore = create((set, get) => ({
     set({
       isSubmitting: true,
       currentStatus: 'RUNNING',
+      friendlyStepText: '系统正在启动报销流程...',
       nodeStatus: { ...INITIAL_NODES },
       result: null,
       logs: []
@@ -152,11 +178,14 @@ export const useExpenseStore = create((set, get) => ({
       {
         onWorkflowStarted: (data) => {
           appendLog('WORKFLOW', data.message);
+          set({ friendlyStepText: '智能财务助理已介入，正在核验申报信息...' });
         },
         onNodeExecuted: (data) => {
           const { node, status, new_logs } = data;
+          const friendly = FRIENDLY_STEP_MAPPING[node] || '正在处理中...';
           set((s) => ({
             currentStatus: status,
+            friendlyStepText: friendly,
             nodeStatus: {
               ...s.nodeStatus,
               [node]: status.startsWith('REJECTED') ? 'blocked' : 'done'
@@ -171,6 +200,7 @@ export const useExpenseStore = create((set, get) => ({
           set((s) => ({
             isSubmitting: false,
             currentStatus: 'PAUSED_HITL',
+            friendlyStepText: '费用已超出常规标准，已自动转入【主管特批审批流程】。',
             nodeStatus: {
               ...s.nodeStatus,
               governance_check: 'interrupted'
@@ -188,6 +218,9 @@ export const useExpenseStore = create((set, get) => ({
           set((s) => ({
             isSubmitting: false,
             currentStatus: data.final_status,
+            friendlyStepText: isSuccess
+              ? '报销处理完成，已生成正式财务预审凭证！'
+              : `提报处理结束，当前状态: [${data.final_status}]`,
             nodeStatus: {
               ...s.nodeStatus,
               create_draft: isSuccess ? 'done' : s.nodeStatus.create_draft
@@ -210,7 +243,10 @@ export const useExpenseStore = create((set, get) => ({
           }
         },
         onError: (err) => {
-          set({ isSubmitting: false });
+          set({
+            isSubmitting: false,
+            friendlyStepText: '通信连接中断，请检查后端服务。'
+          });
           appendLog('ERROR', 'SSE 通信结束或异常中断', 'danger');
         }
       }
@@ -230,6 +266,7 @@ export const useExpenseStore = create((set, get) => ({
     set({
       isSubmitting: true,
       currentStatus: 'RUNNING',
+      friendlyStepText: '正在同步提交报销申请...',
       nodeStatus: { ...INITIAL_NODES },
       result: null,
       logs: []
@@ -246,6 +283,7 @@ export const useExpenseStore = create((set, get) => ({
       set({
         isSubmitting: false,
         currentStatus: data.status,
+        friendlyStepText: '提报处理完成。',
         result: {
           status: data.status,
           threadId,
@@ -257,7 +295,10 @@ export const useExpenseStore = create((set, get) => ({
       });
       appendLog('SYNC', `执行完毕，状态: ${data.status}`);
     } catch (e) {
-      set({ isSubmitting: false });
+      set({
+        isSubmitting: false,
+        friendlyStepText: '提交失败。'
+      });
       appendLog('ERROR', `同步执行失败: ${e.message}`, 'danger');
     }
   }

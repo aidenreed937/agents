@@ -622,3 +622,478 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ======================================================== */
+/* 角色专属样式: 员工端 (Employee View)                       */
+/* ======================================================== */
+.assistant-welcome-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(30, 41, 59, 0.8));
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.assistant-avatar {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.assistant-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.assistant-desc {
+  font-size: 0.84rem;
+  color: #cbd5e1;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+/* 员工端进度条 */
+.processing-indicator-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid var(--accent-cyan);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.friendly-steps-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.step-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.step-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.step-desc {
+  font-size: 0.68rem;
+  color: #64748b;
+}
+
+.step-pill.done {
+  border-color: var(--accent-green);
+  background: rgba(16, 185, 129, 0.08);
+}
+.step-pill.done .step-circle {
+  background: var(--accent-green);
+  color: #fff;
+}
+.step-pill.done .step-title {
+  color: var(--accent-green);
+}
+
+.step-pill.running {
+  border-color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.12);
+}
+.step-pill.running .step-circle {
+  background: var(--accent-cyan);
+  color: #0f172a;
+}
+.step-pill.running .step-title {
+  color: var(--accent-cyan);
+}
+
+.step-pill.interrupted {
+  border-color: var(--accent-yellow);
+  background: rgba(245, 158, 11, 0.1);
+}
+.step-pill.interrupted .step-circle {
+  background: var(--accent-yellow);
+  color: #0f172a;
+}
+.step-pill.interrupted .step-title {
+  color: var(--accent-yellow);
+}
+
+.step-pill.blocked {
+  border-color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.1);
+}
+.step-pill.blocked .step-circle {
+  background: var(--accent-red);
+  color: #fff;
+}
+.step-pill.blocked .step-title {
+  color: var(--accent-red);
+}
+
+/* 员工端电子凭证草单 */
+.voucher-card {
+  background: #111827;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.voucher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.voucher-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.voucher-no {
+  font-size: 0.78rem;
+  color: var(--accent-green);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+
+.voucher-seal {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid var(--accent-green);
+  color: var(--accent-green);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.voucher-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.voucher-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.voucher-label {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.voucher-value {
+  font-size: 0.88rem;
+  color: #f8fafc;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.voucher-value.highlight {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent-green);
+}
+
+.voucher-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.76rem;
+  color: #94a3b8;
+}
+
+/* 员工端交互提示卡 */
+.hitl-notice-card {
+  display: flex;
+  gap: 14px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid var(--accent-yellow);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.hitl-notice-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-yellow);
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.hitl-notice-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent-yellow);
+}
+
+.hitl-notice-desc {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.clarify-bubble {
+  display: flex;
+  gap: 12px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.bubble-avatar {
+  background: var(--accent-cyan);
+  color: #0f172a;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  height: fit-content;
+}
+
+.bubble-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.bubble-text {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.blocked-notice-card {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--accent-red);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.blocked-title {
+  color: var(--accent-red);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.blocked-desc {
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+/* ======================================================== */
+/* 角色专属样式: 主管审批端 (Approver View)                   */
+/* ======================================================== */
+.approver-header-banner, .ops-header-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.approver-banner-title, .ops-banner-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.approver-banner-subtitle, .ops-banner-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.approver-identity-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.audit-diff-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.diff-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.diff-tag {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-yellow);
+  border: 1px solid var(--accent-yellow);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.diff-row.highlight-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.diff-col {
+  text-align: center;
+}
+
+.diff-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.diff-val {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-top: 2px;
+}
+
+.diff-val.warn {
+  color: var(--accent-yellow);
+}
+
+.diff-val.danger {
+  color: var(--accent-red);
+}
+
+.diff-arrow {
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+/* Mermaid 矢量图渲染器定制样式 */
+.btn-small-active {
+  background: var(--accent-blue) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-blue) !important;
+}
+
+.mermaid-svg-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  padding: 16px 12px;
+  background: #090d16 !important;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.mermaid-svg-container svg {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+}
+
+/* 统一字体风格与节点文本清晰度 */
+.mermaid-svg-container .label,
+.mermaid-svg-container text,
+.mermaid-svg-container p,
+.mermaid-svg-container span {
+  font-family: var(--font-mono), system-ui, sans-serif !important;
+  font-size: 12px !important;
+  letter-spacing: 0.2px;
+  line-height: 1.4 !important;
+  color: #f8fafc !important;
+  fill: #f8fafc !important;
+}
+
+.mermaid-svg-container .edgePath path {
+  stroke: #475569 !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid-svg-container .edgeLabel {
+  background-color: #0f172a !important;
+  color: #94a3b8 !important;
+  fill: #94a3b8 !important;
+  border-radius: 4px;
+}
+
+.mermaid-svg-container marker path {
+  fill: #475569 !important;
+}

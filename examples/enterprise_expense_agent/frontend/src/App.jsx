@@ -1,20 +1,33 @@
 import React, { useEffect } from 'react';
 import { Header } from './components/Header';
 import { Navigation } from './components/Navigation';
-import { EmployeePortal } from './components/employee/EmployeePortal';
-import { HitlCenter } from './components/hitl/HitlCenter';
-import { TopologyViewer } from './components/graph/TopologyViewer';
+import { EmployeeView } from './views/employee/EmployeeView';
+import { ApproverView } from './views/approver/ApproverView';
+import { OpsView } from './views/ops/OpsView';
 import { useExpenseStore } from './store/useExpenseStore';
 import { useHitlStore } from './store/useHitlStore';
 import './App.css';
 
 export function App() {
-  const activeTab = useExpenseStore((state) => state.activeTab);
+  const activeRole = useExpenseStore((state) => state.activeRole);
+  const setActiveRole = useExpenseStore((state) => state.setActiveRole);
   const checkConnection = useExpenseStore((state) => state.checkConnection);
-  const isConnected = useExpenseStore((state) => state.isConnected);
   const loadHitlTasks = useHitlStore((state) => state.loadHitlTasks);
 
-  // 初始化健康探测与待办轮询
+  // 监听浏览器 URL Hash 变化 (#employee, #approver, #ops)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (['employee', 'approver', 'ops'].includes(hash)) {
+        setActiveRole(hash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [setActiveRole]);
+
+  // 全局定时健康探测与待办轮询
   useEffect(() => {
     checkConnection();
     loadHitlTasks();
@@ -34,9 +47,9 @@ export function App() {
       <Header />
       <Navigation />
       <main className="main-content">
-        {activeTab === 'employee' && <EmployeePortal />}
-        {activeTab === 'hitl' && <HitlCenter />}
-        {activeTab === 'graph' && <TopologyViewer />}
+        {activeRole === 'employee' && <EmployeeView />}
+        {activeRole === 'approver' && <ApproverView />}
+        {activeRole === 'ops' && <OpsView />}
       </main>
     </div>
   );
