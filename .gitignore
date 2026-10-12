@@ -97,3 +97,6 @@ Thumbs.db
 .gemini/
 .ipynb_checkpoints/
 *.log
+:memory:.ses
+tmp
+.codegraph
