@@ -6,7 +6,8 @@
 
 ### 1. 30 秒电梯回答
 慢查询治理遵循**“慢日志定位 → Explain Analyze 剖析代价 → 索引/参数调优 → 治理死元组与表膨胀”**。
-通过 `pg_stat_statements` 抓取执行耗时最高或调用最频繁的 SQL。使用 `EXPLAIN (ANALYZE, BUFFERS)` 重点排查：是否发生全表扫描（Seq Scan）、索引失效、关联算法选择不当（Nested Loop vs Hash Join）、排序溢出至磁盘（Sort Method: external merge Disk），以及死元组（Dead Tuples）过多引发的高 I/O。
+- **定位与剖析**：开启 `pg_stat_statements` 抓取瓶颈 SQL，执行 `EXPLAIN (ANALYZE, BUFFERS)` 重点核查全表扫描（Seq Scan）、索引失效及行数预估漂移（Rows vs Actual Rows）；
+- **瓶颈根治**：针对 Hash Join/Nested Loop 不当建立联合或覆盖索引（Index Only Scan）；调大 `work_mem` 根治磁盘排序溢出（external merge Disk），定期 VACUUM 治理表膨胀。
 
 ---
 

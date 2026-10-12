@@ -5,11 +5,10 @@
 ---
 
 ### 1. 30 秒电梯回答
-生产级认证架构应兼顾**无状态横向扩展、短生命周期安全与用户无感续期**。
-采用 **Access Token（短时效，如 15 分钟）+ Refresh Token（长时效，如 7~14 天）双令牌机制**。
+生产级认证架构应采用 **Access Token（短时效，如 15 分钟）+ Refresh Token（长时效，如 7~14 天）双令牌机制**，兼顾横向扩展与无感续期。
 - **Web 端安全存储**：Access Token 存内存（内存变量/状态管理），Refresh Token 存入带有 `HttpOnly`、`Secure`、`SameSite=Strict` 的 Cookie 中防范 XSS 窃取；
 - **无感刷新（Silent Refresh）**：前端通过 Axios/Fetch 响应拦截器统一捕获 401，暂停挂起并发请求队列，利用互斥锁发起一次刷新请求，换取新 Token 后重放原请求队列；
-- **权限设计**：结合 RBAC 模式，Access Token Payload 携带用户基本身份与角色，接口端通过网关/拦截器快速鉴权，高敏感接口二次校验数据库权限版本。
+- **权限与轮转防御**：结合 RBAC 模式，Access Token Payload 携带身份与角色用于网关鉴权；服务端推行 RTR 轮转机制，遇旧 Token 重放立即吊销全 Session。
 
 ---
 

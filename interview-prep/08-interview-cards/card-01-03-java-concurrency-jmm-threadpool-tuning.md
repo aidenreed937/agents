@@ -5,8 +5,9 @@
 ---
 
 ### 1. 30 秒电梯回答
-- **JMM 与 volatile**：Java 内存模型通过定义主内存（Main Memory）与工作内存（Working Memory）解决并发下的可见性、原子性与有序性问题。`volatile` 变量通过底层汇编指令（如 x86 的 `lock addl`）插入**内存屏障（Load/Store Barrier）**，禁止指令重排序，并强制刷新写缓冲区（Store Buffer）至主内存，使其他 CPU 核心的 L1/L2 缓存行失效（基于 MESI 缓存一致性协议），从而实现强可见性与有序性，但**不保证复合操作的原子性**。
-- **线程池调优**：严禁使用 `Executors` 快捷工厂方法创建无界队列线程池。生产必须使用 `ThreadPoolExecutor`，区分 CPU 密集型与 I/O 密集型设计核心线程数，配置有界队列（`ArrayBlockingQueue`），并建立动态参数调节与拒绝策略监控。
+高并发 Java 底层治理的核心是**“把控 JMM 内存可见性与有界线程池资源防御”**。
+- **JMM 与 volatile**：Java 内存模型通过定义主内存与工作内存解决并发可见性与有序性。`volatile` 通过汇编级**内存屏障（Memory Barrier）**与缓存一致性协议（MESI），禁止指令重排并强制使其他核缓存行失效，但**不保证复合操作原子性**；
+- **线程池规范与调优**：严禁使用 `Executors` 创建无界队列。生产环境必须使用 `ThreadPoolExecutor`，区分 CPU 密集型与 I/O 密集型配置核心线程数，显式限定有界阻塞队列容量，并配置自适应拒绝策略（如 `CallerRunsPolicy` 反压）。
 
 ---
 
